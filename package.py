@@ -1,5 +1,7 @@
-class Packages:
-    def __init__(self, id, address, city, state, zipcode, deadline, weight, note, status = "At the hub"):
+import csv
+
+class Package:
+    def __init__(self, id, address, city, state, zipcode, deadline, weight, note, status):
         self.id = id
         self.address = address
         self.city = city
@@ -10,9 +12,67 @@ class Packages:
         self.note = note
         self.status = status
 
-class PackageHashThable:
-    def __init__(self, size = 6):
-        self.size = size
-        self.map = [None] * size
+    def __str__(self):
+        return "packageID, address, city, state, zipcode, deadline, weight, status \n %i, %s, %s, %s, %s, %s, %s, %s" % (self.id, self.address, self.city, self.state, self.zipcode, self.deadline, self.weight, self.status)
 
-    def insert() 
+class PackageHashTable:
+    def __init__(self, size = 10):
+        self.size = size
+        self.table = []
+        for i in range(size):
+            self.table.append([])
+
+    def __str__(self):
+        return (str(line) for line in self.table)
+    
+    #Inserts a new key value pair - or updates value if key exists
+    def insert(self, key, value):
+        bucket = hash(key) % len(self.table)
+        bucket_list = self.table[bucket]
+
+        for keyValue in bucket_list:
+            if keyValue[0] == key:
+                #Update value data if key exists
+                keyValue[1] = value
+                return True
+            
+        key_Value = [key, value]
+        bucket_list.append(key_Value)
+        return True
+    
+    #def remove(self, key, value)
+
+    #B
+    #Search hash table for a package
+    def search(self, key):
+        bucket = hash(key) % len(self.table)
+        bucket_list = self.table[bucket]
+
+        for keyValue in bucket_list:
+            if keyValue[0] == key:
+                return keyValue[1]
+            
+        return None
+
+#Read in package data from CSV file        
+def loadPackageData(fileName):
+    with open(fileName, mode="r") as packageData:
+        packages = csv.reader(packageData)
+        for package in packages:
+            id = int(package[0])
+            address = package[1]
+            city = package[2]
+            state = package[3]
+            zipcode = package[4]
+            deadline = package[5]
+            weight = package[6]
+            note = package[7]
+            status = "At the hub"
+
+            #Creating an instance of the package
+            package = Package(id, address, city, state, zipcode, deadline, weight, note, status)
+
+            #Loading package data into the hash table
+            myHashTable.insert(id, package)
+
+myHashTable = PackageHashTable()
