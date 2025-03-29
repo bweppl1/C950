@@ -4,7 +4,6 @@
 
 #imports
 import sys
-import csv
 import package
 
 def main():
@@ -12,20 +11,19 @@ def main():
     runProgram = True
     while(runProgram):
         print("+++++++++++++++++++++++++++++++++")
-        print("1. Display package status")
-        print("2. Display truck status")
-        print("3. Display driver status")
+        print("1. Placeholder")
+        print("2. Display package status")
+        print("3. Placeholder")
         print("4. Begin Delivery")
         print("5. Exit program")
         print("+++++++++++++++++++++++++++++++++")
-        ui_option = input("Choose an option(1, 2, 3, 4 or 5): ")
+        ui_option = int(input("Choose an option(1, 2, 3, 4 or 5): "))
 
         if ui_option == 1:
-            package_id = input("Enter package ID: ")
-            package.getPackage(package_id)
+            pass
         elif ui_option == 2:
-            truck_id = input("Enter truck #(1, 2 or 3): ")
-            truck.getStatus(truck_id)
+            pID = int(input("Enter a package ID: "))
+            print(package.myHashTable.search(pID))
         elif ui_option == 3:
             pass
         elif ui_option == 4:
@@ -36,12 +34,9 @@ def main():
             print("Exiting program.")
             sys.exit()
 
-def package_Hash():
-    
-    with open("packages.csv", mode="r") as packages:
-        reader = csv.DictReader(packages)
-        for row in reader:
+package.loadPackageData("packages.csv")
 
+#print (package.myHashTable.table)
 
 if __name__ == "__main__":
     main()
