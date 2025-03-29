@@ -1,5 +1,11 @@
+#Brent Weppler
+#Student ID# 012456940
+#Western Governors University
+
 #imports
 import sys
+import csv
+import package
 
 def main():
     #User Interface
@@ -29,6 +35,13 @@ def main():
             runProgram = False
             print("Exiting program.")
             sys.exit()
+
+def package_Hash():
+    
+    with open("packages.csv", mode="r") as packages:
+        reader = csv.DictReader(packages)
+        for row in reader:
+
 
 if __name__ == "__main__":
     main()
