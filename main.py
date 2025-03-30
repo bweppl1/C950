@@ -29,8 +29,8 @@ def main():
         elif ui_option == 3:
             print(truck1)
         elif ui_option == 4:
-            #begin_delivery
-            pass
+            #Starts delivery
+            truck1.begin_delivery(distance_array, address_list)
         elif ui_option == 5:
             runProgram = False
             print("Exiting program.")
@@ -41,19 +41,17 @@ package.loadPackageData("packages.csv")
 distance_array = distances.loadDistances("distances.csv")
 address_list = distances.loadAddresses("addresses.csv")
 
-#Truck 1 creation and manual package loading
+#Create and load trucks
+#TRUCK 1
 truck1 = truck.Truck(1)
-truck1_packages_to_load = [1]
+truck1_packages_to_load = [1, 2, 3]
 for i in truck1_packages_to_load:
     truck1.loadPackages(package.myHashTable.search(i))
 
-truck1_payload = truck1.getPackages()
-truck1_route = distances.nearest_node(truck1_payload, distance_array, address_list)
-
-#Truck 2 creation and manual package loading
+#TRUCK 2
 truck2 = truck.Truck(2)
 
-#Truck 3 creation and manual package loading
+#TRUCK 3
 truck3 = truck.Truck(3)
 
 

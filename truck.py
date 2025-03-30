@@ -1,3 +1,5 @@
+import package
+
 class Truck:
     def __init__(self, id):
         self.id = id
@@ -14,3 +16,37 @@ class Truck:
 
     def getPackages(self):
         return self.packages
+    
+    def begin_delivery(self, distances, addresses):
+        current_node = 0
+        nearest_node = 100
+        unvisited_nodes = []
+        self.status = "out for delivery"
+        
+        for package in self.packages:
+            for i in range(len(addresses)):
+                if package.address == addresses[i]:
+                    unvisited_nodes.append(i)
+                    package.status = "en route"
+
+        while len(unvisited_nodes) > 0:
+            for node in unvisited_nodes:
+                edge_weight = distances[current_node][node]
+                if edge_weight < nearest_node:
+                    nearest_node = edge_weight
+                    next_node = node
+
+            print(f"Package delivered to {addresses[next_node]}")
+            #remove package from truck
+            #change package status to delivered
+            unvisited_nodes.remove(next_node)
+            self.distanceTravelled += distances[current_node][next_node]
+            current_node = next_node
+            nearest_node = 100
+
+        ###Check if all packages are delivered
+        #if len(package.undelivered_packages) > 0:
+            #Return home if there is packages to deliver
+        #  next_node = 0
+        #  distance_traveled += distances[current_node][next_node]
+            #Truck.status = "at the Hub"?#
