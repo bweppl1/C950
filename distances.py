@@ -1,15 +1,12 @@
 import csv
 
-#Assigning the csv files to variables
-addressFile = "addresses.csv"
-distanceFile = "distances.csv"
-
 #Reading in addresses CSV
 def loadAddresses(fileName):
     with open(fileName, mode="r") as file:
         reader = csv.reader(file)
-        #2D array for addresses
-        addresses = [address for address in reader]
+        addresses = []
+        for address in reader:
+            addresses.append(address[0])
 
     return addresses
 
@@ -29,7 +26,22 @@ def loadDistances(fileName):
 
     return distances
 
-#Printing for testing
-print(loadAddresses(addressFile))
-print(loadDistances(distanceFile))
+def nearest_node(packages, distances, addresses):
+    distance_traveled = 0
+    current_node = addresses[0]
+    next_node = None
+    unvisited_nodes = []
+    
+    for package in packages:
+        for i in range(len(addresses)):
+            if package[1] == addresses[i]:
+                unvisited_nodes.append(i)
 
+    while len(unvisited_nodes) > 0:
+        for node in unvisited_nodes:
+            if distances[current_node][node] < next_node or next_node == None:
+                next_node = node
+
+        distance_traveled += distances[current_node][next_node]
+        current_node = next_node
+        next_node = None

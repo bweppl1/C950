@@ -27,7 +27,7 @@ def main():
             pID = int(input("Enter a package ID: "))
             print(package.myHashTable.search(pID))
         elif ui_option == 3:
-            pass
+            print(truck1)
         elif ui_option == 4:
             #begin_delivery
             pass
@@ -39,10 +39,27 @@ def main():
 #Initiating loading package data
 package.loadPackageData("packages.csv")
 
+#Truck 1 creation and manual package loading
 truck1 = truck.Truck(1)
+truck1_packages_to_load = [1, 2, 3, 4]
+for i in truck1_packages_to_load:
+    truck1.loadPackages(package.myHashTable.search(i))
+
+truck1_payload = truck1.getPackages()
+
+#Truck 2 creation and manual package loading
 truck2 = truck.Truck(2)
+
+#Truck 3 creation and manual package loading
 truck3 = truck.Truck(3)
 
+distance_array = distances.loadDistances("distances.csv")
+address_list = distances.loadAddresses("addresses.csv")
+
+truck1_route = distances.nearest_node(truck1_payload, distance_array, address_list)
+
+
+#Testing print functions
 #print (package.myHashTable.table)
 
 if __name__ == "__main__":
