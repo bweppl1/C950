@@ -28,20 +28,33 @@ def loadDistances(fileName):
 
 def nearest_node(packages, distances, addresses):
     distance_traveled = 0
-    current_node = addresses[0]
-    next_node = None
+    current_node = 0
+    next_node = 100
     unvisited_nodes = []
+    #Update truck status?
     
     for package in packages:
         for i in range(len(addresses)):
-            if package[1] == addresses[i]:
+            if package.address == addresses[i]:
                 unvisited_nodes.append(i)
 
     while len(unvisited_nodes) > 0:
         for node in unvisited_nodes:
-            if distances[current_node][node] < next_node or next_node == None:
+            if distances[current_node][node] < next_node:
                 next_node = node
 
+                
+        print(f"Package delivered to {addresses[next_node]}")
+        #remove package from truck
+        #change package status to delivered
+        unvisited_nodes.remove(next_node)
         distance_traveled += distances[current_node][next_node]
         current_node = next_node
-        next_node = None
+        next_node = 100
+
+    ###Check if all packages are delivered
+    #if len(package.undelivered_packages) > 0:
+        #Return home if there is packages to deliver
+      #  next_node = 0
+      #  distance_traveled += distances[current_node][next_node]
+        #Truck.status = "at the Hub"?#
