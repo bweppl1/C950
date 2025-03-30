@@ -5,6 +5,8 @@
 #imports
 import sys
 import package
+import distances
+import truck
 
 def main():
     #User Interface
@@ -13,7 +15,7 @@ def main():
         print("+++++++++++++++++++++++++++++++++")
         print("1. Placeholder")
         print("2. Display package status")
-        print("3. Placeholder")
+        print("3. Display status of trucks")
         print("4. Begin Delivery")
         print("5. Exit program")
         print("+++++++++++++++++++++++++++++++++")
@@ -34,7 +36,12 @@ def main():
             print("Exiting program.")
             sys.exit()
 
+#Initiating loading package data
 package.loadPackageData("packages.csv")
+
+truck1 = truck.Truck(1)
+truck2 = truck.Truck(2)
+truck3 = truck.Truck(3)
 
 #print (package.myHashTable.table)
 
