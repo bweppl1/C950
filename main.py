@@ -30,7 +30,7 @@ def main():
             print(truck1)
         elif ui_option == 4:
             #Starts delivery
-            truck1.begin_delivery(distance_array, address_list)
+            truck1.begin_delivery(distance_array)
         elif ui_option == 5:
             runProgram = False
             print("Exiting program.")
@@ -44,7 +44,7 @@ address_list = distances.loadAddresses("addresses.csv")
 #Create and load trucks
 #TRUCK 1
 truck1 = truck.Truck(1)
-truck1_packages_to_load = [1, 2, 3]
+truck1_packages_to_load = [1, 2, 3, 4, 5]
 for i in truck1_packages_to_load:
     truck1.loadPackages(package.myHashTable.search(i))
 
@@ -53,8 +53,6 @@ truck2 = truck.Truck(2)
 
 #TRUCK 3
 truck3 = truck.Truck(3)
-
-
 
 #Testing print functions
 #print (package.myHashTable.table)

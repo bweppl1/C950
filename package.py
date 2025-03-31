@@ -1,7 +1,8 @@
 import csv
+import distances
 
 class Package:
-    def __init__(self, id, address, city, state, zipcode, deadline, weight, note, status):
+    def __init__(self, id, address, city, state, zipcode, deadline, weight, note, status, node_index):
         self.id = id
         self.address = address
         self.city = city
@@ -11,6 +12,7 @@ class Package:
         self.weight = weight
         self.note = note
         self.status = status
+        self.node_index = node_index
 
     def __str__(self):
         return "packageID, address, city, state, zipcode, deadline, weight, status \n %i, %s, %s, %s, %s, %s, %s, %s" % (self.id, self.address, self.city, self.state, self.zipcode, self.deadline, self.weight, self.status)
@@ -68,9 +70,10 @@ def loadPackageData(fileName):
             weight = package[6]
             note = package[7]
             status = "At the hub"
+            node_index = distances.get_node_index(package[1])
 
             #Creating an instance of the package
-            package = Package(id, address, city, state, zipcode, deadline, weight, note, status)
+            package = Package(id, address, city, state, zipcode, deadline, weight, note, status, node_index)
 
             #Loading package data into the hash table
             myHashTable.insert(id, package)

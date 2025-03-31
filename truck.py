@@ -17,11 +17,33 @@ class Truck:
     def getPackages(self):
         return self.packages
     
+    def begin_delivery(self, distances):
+        current_node = 0
+        nearest_node = float("inf")
+        distance_travelled = 0
+
+        while self.packages:
+            for package in self.packages:
+                if distances[current_node][package.node_index] < nearest_node:
+                    nearest_node = distances[current_node][package.node_index]
+                    next_node = package.node_index
+                    package_delivered = package
+
+            distance_travelled += distances[current_node][next_node]
+            self.packages.remove(package_delivered)
+            current_node = next_node
+            print(f"Package #{package_delivered.id} delivered to {package_delivered.address}")
+            nearest_node = float("inf")
+            
+
+#Old Algo
+    """
     def begin_delivery(self, distances, addresses):
         current_node = 0
         nearest_node = 100
         unvisited_nodes = []
         self.status = "out for delivery"
+
         
         for package in self.packages:
             for i in range(len(addresses)):
@@ -43,7 +65,7 @@ class Truck:
             self.distanceTravelled += distances[current_node][next_node]
             current_node = next_node
             nearest_node = 100
-
+"""
         ###Check if all packages are delivered
         #if len(package.undelivered_packages) > 0:
             #Return home if there is packages to deliver

@@ -27,3 +27,9 @@ def loadDistances(fileName):
                 distances[i][j] = distances[j][i]
 
     return distances
+
+def get_node_index(address):
+    address_list = loadAddresses("addresses.csv")
+    for i in range(len(address_list)):
+        if address == address_list[i]:
+            return i
