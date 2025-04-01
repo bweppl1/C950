@@ -43,10 +43,7 @@ class PackageHashTable:
         key_Value = [key, value]
         bucket_list.append(key_Value)
         return True
-    
-    #def remove(self, key, value)
 
-    #B
     #Search hash table for a package
     def search(self, key):
         bucket = hash(key) % len(self.table)

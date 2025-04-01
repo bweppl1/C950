@@ -42,24 +42,24 @@ class Truck:
                     package_delivered = pkg
 
             #Tasks after each package delivery
-            miles = distances[current_node][next_node]
+            miles = distances[current_node][next_node] #Set miles travelled each delivery
             truck_time += td(minutes=miles / 18 * 60) #Updating clock
-            distance_travelled += miles
+            distance_travelled += miles #Increment total miles travelled
             self.packages.remove(package_delivered) #Remove package from truck
-            current_node = next_node
-            package_delivered.status = "delivered"
-            package_delivered.time_delivered = truck_time
-            print(f"Package #{package_delivered.id} delivered to {package_delivered.address} by Truck {self.id} at {package_delivered.time_delivered} | Deadline: {package_delivered.deadline}")
-            nearest_node = float("inf")
+            current_node = next_node #Update current location
+            package_delivered.status = "delivered" #Update package status
+            package_delivered.time_delivered = truck_time #Set time package was delivered
+            print(f"Truck {self.id} | Package #{package_delivered.id} delivered to {package_delivered.address} at {package_delivered.time_delivered} | Deadline: {package_delivered.deadline}")
+            nearest_node = float("inf") #Reset nearest_node value to infinity
 
-        #Return to hub
-        next_node = 0
-        miles = distances[current_node][next_node]
-        truck_time += td(minutes=miles / 18 * 60)
-        distance_travelled += miles
+        #Return truck 1 + 2 to hub, abandon truck 3
+        if self.id == 3:
+            self.status = "abandoned"
+        else:
+            next_node = 0
+            miles = distances[current_node][next_node]
+            truck_time += td(minutes=miles / 18 * 60)
+            distance_travelled += miles
+            self.status = "at the hub"
         self.distance_travelled += distance_travelled
-        self.status = "at the hub"
         self.return_time = truck_time
-        
-    #def time_update(miles):
-    #    return(miles / 18 * 60)
