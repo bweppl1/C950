@@ -29,11 +29,14 @@ class Truck:
         distance_travelled = 0
 
         while self.packages:
-            for package in self.packages:
-                if distances[current_node][package.node_index] < nearest_node:
-                    nearest_node = distances[current_node][package.node_index]
-                    next_node = package.node_index
-                    package_delivered = package
+            for pkg in self.packages:
+                if truck_time > datetime(2025, 3, 8, 10, 20):
+                    new_address = package.myHashTable.search(9)
+                    new_address.address = "410 S State St"
+                if distances[current_node][pkg.node_index] < nearest_node:
+                    nearest_node = distances[current_node][pkg.node_index]
+                    next_node = pkg.node_index
+                    package_delivered = pkg
 
             #Tasks after each package delivery
             miles = distances[current_node][next_node]
@@ -44,14 +47,19 @@ class Truck:
             current_node = next_node
             package_delivered.status = "delivered"
             package_delivered.time_delivered = truck_time
-            print(f"Package #{package_delivered.id} delivered to {package_delivered.address} by Truck {self.id} at {package_delivered.time_delivered}")
+            print(f"Package #{package_delivered.id} delivered to {package_delivered.address} by Truck {self.id} at {package_delivered.time_delivered} | {package_delivered.deadline}")
             nearest_node = float("inf")
 
         #Return to hub
-        next_node = 0
-        miles = distances[current_node][next_node]
-        truck_time += td(minutes=miles / 18 * 60)
-        distance_travelled += miles
+        last_package = package.myHashTable.search(11)
+        #Leave truck 3 on the street
+        if last_package.status == "delivered":
+            pass
+        else:
+            next_node = 0
+            miles = distances[current_node][next_node]
+            truck_time += td(minutes=miles / 18 * 60)
+            distance_travelled += miles
         self.distance_travelled += distance_travelled
         self.status = "at the hub"
         self.return_time = truck_time

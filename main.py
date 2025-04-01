@@ -38,20 +38,22 @@ def main():
             print(truck1)
             print(truck2)
             print(truck3)
+            total_mileage = truck1.distance_travelled + truck2.distance_travelled + truck3.distance_travelled
+            print(f"Total mileage: {total_mileage:.1f} miles.")
         elif ui_option == 4:
             #Create and load trucks
             #TRUCK 1
-            truck1_packages_to_load = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 21, 25, 28, 29, 32]
+            truck1_packages_to_load = [2, 4, 5, 6, 7, 1, 9, 10, 24, 26, 25, 28, 40, 32, 33]
             for i in truck1_packages_to_load:
                 truck1.loadPackages(package.myHashTable.search(i))
 
             #TRUCK 2
-            truck2_packages_to_load = [1, 3, 13, 14, 15, 16, 18, 19, 20, 30, 31, 34, 36, 37, 38, 40]
+            truck2_packages_to_load = [8, 3, 13, 14, 15, 16, 18, 19, 20, 30, 31, 34, 36, 37, 38, 29]
             for i in truck2_packages_to_load:
                 truck2.loadPackages(package.myHashTable.search(i))
 
             #TRUCK 3
-            truck3_packages_to_load = [22, 23, 24, 26, 27, 33, 35, 39]
+            truck3_packages_to_load = [22, 23, 11, 27, 35, 12, 17, 21, 39]
             for i in truck3_packages_to_load:
                 truck3.loadPackages(package.myHashTable.search(i))
 
