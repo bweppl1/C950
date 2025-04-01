@@ -1,7 +1,5 @@
 import csv
 
-import truck
-
 #Reading in addresses CSV
 def loadAddresses(fileName):
     with open(fileName, mode="r") as file:

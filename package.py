@@ -15,6 +15,7 @@ class Package:
         self.node_index = node_index
         self.time_departed = None
         self.time_delivered = None
+        self.assigned_truck = "Loading Dock"
 
     def __str__(self):
         return (f"Package #{self.id} status: {self.status} | Destination: {self.city} {self.state}, {self.address}")

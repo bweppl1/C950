@@ -23,20 +23,16 @@ def main():
     while(runProgram):
         print("=" * 50)
         print(" 1. Begin delivery")
-        print(" 2. Check package status at a specific time")
-        print(" 3. Display status of all packages")
-        print(" 4. Display status of all trucks")
-        print(" 5. Exit Program")
+        print(" 2. Display status of all packages")
+        print(" 3. Display status of all trucks")
+        print(" 4. Exit Program")
         print("=" * 50)
-        ui_option = int(input("Choose an option(1, 2, 3, 4 or 5): "))
+        ui_option = int(input("Choose an option(1, 2, 3 or 4): "))
 
         if ui_option == 1:
             start_delivery()
 
         elif ui_option == 2:
-            #Interface option for the user to check package status at a specific time
-            pID = int(input("Enter a package ID: "))
-            requested_package = package.myHashTable.search(pID)
             while True:
                 requested_time = input("Enter a time (HH:MM AM/PM): ").strip()
                 try: #Account for incorrect time formatting
@@ -45,18 +41,15 @@ def main():
                 except ValueError:
                     print("Not a valid time input.")
 
-            departure_time = requested_package.time_departed
-            delivery_time = requested_package.time_delivered
+            for i in range(1, 41):
+                pkg = package.myHashTable.search(i)
 
-            print("*" * 50)
-            print(check_status(requested_package, user_time, departure_time, delivery_time))
-            print("*" * 50)
+                departure_time = pkg.time_departed
+                delivery_time = pkg.time_delivered
+
+                print(check_status(pkg, user_time, departure_time, delivery_time))
 
         elif ui_option == 3:
-            for i in range(1, 41):
-                print(package.myHashTable.search(i))
-
-        elif ui_option == 4:
             #Printing all trucks status'
             print("*" * 50)
             print(truck1)
@@ -66,7 +59,7 @@ def main():
             print(f"Total mileage: {total_mileage:.1f} miles")
             print("*" * 50)
 
-        elif ui_option == 5:
+        elif ui_option == 4:
             #Exiting program with confirmation
             confirm = input("Are you sure you want to exit? 'Y' to confirm: ")
             if confirm.lower() == "y":
@@ -77,23 +70,23 @@ def main():
 #Function to check the status of packages at user specified time
 def check_status(requested_package, user_time, departure_time, delivery_time):
     if departure_time == None:
-        return(f"Package #{requested_package.id} is at the hub.")
+        return(f"Package #{requested_package.id} is at the hub on Truck {requested_package.assigned_truck}.")
 
     departure_time = requested_package.time_departed.time() #Dropping the date
 
     if delivery_time == None and user_time >= departure_time:
-        return(f"Package #{requested_package.id} is en route.")
+        return(f"Package #{requested_package.id} is en route on Truck {requested_package.assigned_truck}.")
     elif user_time < departure_time:
-        return(f"At {user_time} Package #{requested_package.id} was at the hub.")
+        return(f"At {user_time} Package #{requested_package.id} was at the hub on Truck {requested_package.assigned_truck}.")
 
     delivery_time = requested_package.time_delivered.time() #Dropping the date
 
     if user_time >= delivery_time:
-        return(f"Package #{requested_package.id} was delivered at {requested_package.time_delivered.time()}.")
+        return(f"Package #{requested_package.id} was delivered at {requested_package.time_delivered.time()} by Truck {requested_package.assigned_truck}.")
     elif user_time > departure_time:
-        return(f"At {user_time} Package #{requested_package.id} was en route.")
+        return(f"At {user_time} Package #{requested_package.id} was en route on Truck {requested_package.assigned_truck}.")
     else:
-        return(f"At {user_time} Package #{requested_package.id} was at the hub.")
+        return(f"At {user_time} Package #{requested_package.id} was at the hub on Truck {requested_package.assigned_truck}.")
 
 #Starts the delivery
 def start_delivery():

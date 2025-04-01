@@ -11,10 +11,11 @@ class Truck:
 
     def __str__(self):
         return "Truck %s is %s, loaded packages: %s, distance travelled: %.1f miles." % (self.id, self.status, self.packages, self.distance_travelled)
-    
+
     def loadPackages(self, p):
         self.packages.append(p)
         p.status = "en route"
+        p.assigned_truck = self.id
 
     def getPackages(self):
         return self.packages
