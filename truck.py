@@ -1,23 +1,29 @@
+from datetime import datetime, timedelta as td
+
 import package
 
 class Truck:
     def __init__(self, id):
         self.id = id
-        self.driver = None
-        self.distanceTravelled = 0
+        self.distance_travelled = 0
         self.packages = []
+        self.return_time = None
         self.status = "at the hub"
 
     def __str__(self):
-        return "Truck %s is %s, loaded packages: %s, distance travelled: %.1f miles." % (self.id, self.status, self.packages, self.distanceTravelled)
+        return "Truck %s is %s, loaded packages: %s, distance travelled: %.1f miles." % (self.id, self.status, self.packages, self.distance_travelled)
     
     def loadPackages(self, p):
         self.packages.append(p)
+        p.status = "en route"
 
     def getPackages(self):
         return self.packages
     
-    def begin_delivery(self, distances):
+    #Nearest neighbor algorithm
+    def begin_delivery(self, distances, time):
+        truck_time = time
+        self.status = "out on delivery"
         current_node = 0
         nearest_node = float("inf")
         distance_travelled = 0
@@ -29,46 +35,26 @@ class Truck:
                     next_node = package.node_index
                     package_delivered = package
 
-            distance_travelled += distances[current_node][next_node]
+            #Tasks after each package delivery
+            miles = distances[current_node][next_node]
+            truck_time += td(minutes=miles / 18 * 60)
+            #Check to update package
+            distance_travelled += miles
             self.packages.remove(package_delivered)
             current_node = next_node
-            print(f"Package #{package_delivered.id} delivered to {package_delivered.address}")
+            package_delivered.status = "delivered"
+            package_delivered.time_delivered = truck_time
+            print(f"Package #{package_delivered.id} delivered to {package_delivered.address} by Truck {self.id} at {package_delivered.time_delivered}")
             nearest_node = float("inf")
-            
 
-#Old Algo
-    """
-    def begin_delivery(self, distances, addresses):
-        current_node = 0
-        nearest_node = 100
-        unvisited_nodes = []
-        self.status = "out for delivery"
-
+        #Return to hub
+        next_node = 0
+        miles = distances[current_node][next_node]
+        truck_time += td(minutes=miles / 18 * 60)
+        distance_travelled += miles
+        self.distance_travelled += distance_travelled
+        self.status = "at the hub"
+        self.return_time = truck_time
         
-        for package in self.packages:
-            for i in range(len(addresses)):
-                if package.address == addresses[i]:
-                    unvisited_nodes.append(i)
-                    package.status = "en route"
-
-        while len(unvisited_nodes) > 0:
-            for node in unvisited_nodes:
-                edge_weight = distances[current_node][node]
-                if edge_weight < nearest_node:
-                    nearest_node = edge_weight
-                    next_node = node
-
-            print(f"Package delivered to {addresses[next_node]}")
-            #remove package from truck
-            #change package status to delivered
-            unvisited_nodes.remove(next_node)
-            self.distanceTravelled += distances[current_node][next_node]
-            current_node = next_node
-            nearest_node = 100
-"""
-        ###Check if all packages are delivered
-        #if len(package.undelivered_packages) > 0:
-            #Return home if there is packages to deliver
-        #  next_node = 0
-        #  distance_traveled += distances[current_node][next_node]
-            #Truck.status = "at the Hub"?#
+    def time_update(miles):
+        return(miles / 18 * 60)

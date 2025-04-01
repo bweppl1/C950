@@ -13,9 +13,11 @@ class Package:
         self.note = note
         self.status = status
         self.node_index = node_index
+        self.time_departed = None
+        self.time_delivered = None
 
     def __str__(self):
-        return "packageID, address, city, state, zipcode, deadline, weight, status \n %i, %s, %s, %s, %s, %s, %s, %s" % (self.id, self.address, self.city, self.state, self.zipcode, self.deadline, self.weight, self.status)
+        return "%i, %s, %s, %s, %s, %s, %s, %s" % (self.id, self.address, self.city, self.state, self.zipcode, self.deadline, self.status, self.time_delivered)
 
 class PackageHashTable:
     def __init__(self, size = 10):
@@ -69,7 +71,7 @@ def loadPackageData(fileName):
             deadline = package[5]
             weight = package[6]
             note = package[7]
-            status = "At the hub"
+            status = "at the hub"
             node_index = distances.get_node_index(package[1])
 
             #Creating an instance of the package
