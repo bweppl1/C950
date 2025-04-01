@@ -17,8 +17,8 @@ class Package:
         self.time_delivered = None
 
     def __str__(self):
-        return "%i, %s, %s, %s, %s, %s, %s, %s" % (self.id, self.address, self.city, self.state, self.zipcode, self.deadline, self.status, self.time_delivered)
-
+        return (f"Package #{self.id} status: {self.status} | Destination: {self.city} {self.state}, {self.address}")
+    
 class PackageHashTable:
     def __init__(self, size = 10):
         self.size = size
