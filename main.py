@@ -70,23 +70,23 @@ def main():
 #Function to check the status of packages at user specified time
 def check_status(requested_package, user_time, departure_time, delivery_time):
     if departure_time == None:
-        return(f"Package #{requested_package.id} is at the hub on Truck {requested_package.assigned_truck}.")
+        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} is at the hub on Truck {requested_package.assigned_truck}. To be delivered to {requested_package.address}, {requested_package.city} {requested_package.state}. Deadline: {requested_package.deadline}")
 
     departure_time = requested_package.time_departed.time() #Dropping the date
 
     if delivery_time == None and user_time >= departure_time:
-        return(f"Package #{requested_package.id} is en route on Truck {requested_package.assigned_truck}.")
+        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} is en route to be delivered to {requested_package.address}, {requested_package.city} {requested_package.state} on Truck {requested_package.assigned_truck}. Deadline: {requested_package.deadline}")
     elif user_time < departure_time:
-        return(f"At {user_time} Package #{requested_package.id} was at the hub on Truck {requested_package.assigned_truck}.")
+        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} was at the hub on Truck {requested_package.assigned_truck}. To be delivered to {requested_package.address}, {requested_package.city} {requested_package.state}. Deadline: {requested_package.deadline}")
 
     delivery_time = requested_package.time_delivered.time() #Dropping the date
 
     if user_time >= delivery_time:
-        return(f"Package #{requested_package.id} was delivered at {requested_package.time_delivered.time()} by Truck {requested_package.assigned_truck}.")
+        return(f"Package #{requested_package.id} was delivered to {requested_package.address}, {requested_package.city} {requested_package.state} at {requested_package.time_delivered.strftime('%-I:%M %p')} by Truck {requested_package.assigned_truck}. Deadline: {requested_package.deadline}")
     elif user_time > departure_time:
-        return(f"At {user_time} Package #{requested_package.id} was en route on Truck {requested_package.assigned_truck}.")
+        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} was en route to be delivered to {requested_package.address}, {requested_package.city} {requested_package.state} on Truck {requested_package.assigned_truck}. Deadline: {requested_package.deadline}")
     else:
-        return(f"At {user_time} Package #{requested_package.id} was at the hub on Truck {requested_package.assigned_truck}.")
+        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} was at the hub on Truck {requested_package.assigned_truck}. To be delivered to {requested_package.address}, {requested_package.city} {requested_package.state}. Deadline: {requested_package.deadline}")
 
 #Starts the delivery
 def start_delivery():
