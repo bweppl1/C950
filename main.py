@@ -41,13 +41,11 @@ def main():
                 except ValueError:
                     print("Not a valid time input.")
 
+            print("Time, Package ID#, Truck Assignment, Destination, Status, Deadline")
+    
             for i in range(1, 41):
                 pkg = package.myHashTable.search(i)
-
-                departure_time = pkg.time_departed
-                delivery_time = pkg.time_delivered
-
-                print(check_status(pkg, user_time, departure_time, delivery_time))
+                print(check_status(pkg, user_time))
 
         elif ui_option == 3:
             #Printing all trucks status'
@@ -68,25 +66,40 @@ def main():
                 sys.exit()
 
 #Function to check the status of packages at user specified time
-def check_status(requested_package, user_time, departure_time, delivery_time):
-    if departure_time == None:
-        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} is at the hub on Truck {requested_package.assigned_truck}. To be delivered to {requested_package.address}, {requested_package.city} {requested_package.state}. Deadline: {requested_package.deadline}")
+def check_status(pkg, user_time):
+    #delayed packages
+    delayed_packages = [6, 25, 28, 32]
 
-    departure_time = requested_package.time_departed.time() #Dropping the date
-
-    if delivery_time == None and user_time >= departure_time:
-        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} is en route to be delivered to {requested_package.address}, {requested_package.city} {requested_package.state} on Truck {requested_package.assigned_truck}. Deadline: {requested_package.deadline}")
-    elif user_time < departure_time:
-        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} was at the hub on Truck {requested_package.assigned_truck}. To be delivered to {requested_package.address}, {requested_package.city} {requested_package.state}. Deadline: {requested_package.deadline}")
-
-    delivery_time = requested_package.time_delivered.time() #Dropping the date
-
-    if user_time >= delivery_time:
-        return(f"Package #{requested_package.id} was delivered to {requested_package.address}, {requested_package.city} {requested_package.state} at {requested_package.time_delivered.strftime('%-I:%M %p')} by Truck {requested_package.assigned_truck}. Deadline: {requested_package.deadline}")
-    elif user_time > departure_time:
-        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} was en route to be delivered to {requested_package.address}, {requested_package.city} {requested_package.state} on Truck {requested_package.assigned_truck}. Deadline: {requested_package.deadline}")
+    #To update package 9 destination at 10:20 AM
+    pkg_09_update = datetime(2025, 3, 8, 10, 20)
+    pkg_09 = package.myHashTable.search(9)
+    if user_time < pkg_09_update.time():
+        pkg_09.address = "300 State St"
+        pkg_09.zipcode = "84103"
     else:
-        return(f"At {user_time.strftime('%-I:%M %p')} Package #{requested_package.id} was at the hub on Truck {requested_package.assigned_truck}. To be delivered to {requested_package.address}, {requested_package.city} {requested_package.state}. Deadline: {requested_package.deadline}")
+        pkg_09.address = "410 S State St"
+        pkg_09.zipcode = "84111"
+
+    #Checking status before the algo has run
+    if pkg.time_departed == None:
+        return("Program has not been run. Choose '1. Begin delivery' first.")
+
+    departure_time = pkg.time_departed.time() #Dropping the date    
+    delivery_time = pkg.time_delivered.time() #Dropping the date
+    delivery_status = "undelivered"
+
+    #Adjusting package status based on user requested time
+    if user_time >= delivery_time:
+        pkg.status = f"delivered at {pkg.time_delivered.strftime('%-I:%M %p')}"
+    elif user_time > departure_time:
+        pkg.status = "en route"
+    elif pkg.id not in delayed_packages:
+        pkg.status = "at the hub"
+    else:
+        pkg.status = "delayed"
+
+    #Returning package status at user requested time
+    return(f"{user_time.strftime('%-I:%M %p')}, #{pkg.id}, Truck {pkg.assigned_truck}, {pkg.address}, {pkg.city}, {pkg.state}, {pkg.status}, {pkg.deadline}")
 
 #Starts the delivery
 def start_delivery():
